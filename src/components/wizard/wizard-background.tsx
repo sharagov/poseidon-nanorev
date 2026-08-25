@@ -18,8 +18,12 @@ export function WizardBackground({ step }: { step: StepId }) {
 
   // Same photo, different crop (e.g. welcome <-> register): update the
   // existing layer in place so the object-position transition handles it.
-  // Different photo: stack a new layer on top and fade it in, instead of
-  // cutting the <img src> instantly.
+  // Different photo: stack a new layer on top; it fades in once its own
+  // <img> reports onLoad (below), not immediately — on a slow connection
+  // the photo can take a while to actually arrive, and revealing/pruning
+  // on a fixed timer regardless would drop the covering older layer
+  // while the new one was still blank, flashing the plain background
+  // color through.
   useEffect(() => {
     setLayers((prev) => {
       const top = prev[prev.length - 1];
@@ -32,21 +36,18 @@ export function WizardBackground({ step }: { step: StepId }) {
     });
   }, [src, position]);
 
+  // Once the newest layer has actually loaded and faded in, drop the
+  // older ones it now fully covers. Gated on revealedKey reaching the
+  // top layer's key (set by onLoad) rather than just layers changing,
+  // so nothing gets pruned before its replacement is actually visible.
   useEffect(() => {
     const top = layers[layers.length - 1];
-    if (top.key === revealedKey) return;
-    const raf = requestAnimationFrame(() => setRevealedKey(top.key));
-    return () => cancelAnimationFrame(raf);
-  }, [layers, revealedKey]);
-
-  // Once the fade-in finishes, drop the covered-up older layers.
-  useEffect(() => {
-    if (layers.length < 2) return;
+    if (top.key !== revealedKey || layers.length < 2) return;
     const timeout = setTimeout(() => {
       setLayers((prev) => prev.slice(-1));
     }, 1000);
     return () => clearTimeout(timeout);
-  }, [layers]);
+  }, [layers, revealedKey]);
 
   return (
     <div className="fixed inset-0 bg-neutral-200">
@@ -59,6 +60,9 @@ export function WizardBackground({ step }: { step: StepId }) {
           priority={index === layers.length - 1}
           quality={90}
           sizes="100vw"
+          onLoad={() =>
+            setRevealedKey((prev) => (layer.key > prev ? layer.key : prev))
+          }
           className="object-cover transition-[object-position,opacity] duration-1000 ease-out"
           style={{
             objectPosition: layer.position,

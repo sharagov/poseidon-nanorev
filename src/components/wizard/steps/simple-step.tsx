@@ -50,7 +50,6 @@ export function SimpleStep({
           <Button
             size="lg"
             className="w-full"
-            variant={success ? "secondary" : "default"}
             onClick={onNext}
             disabled={disabled || loading}
           >
