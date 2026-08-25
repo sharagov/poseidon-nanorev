@@ -1,10 +1,9 @@
 import { Scene } from "@/components/wizard/scene";
-import { STEP_IMAGE } from "@/lib/wizard-steps";
 import { CheckCircle2 } from "lucide-react";
 
 export function ThankYouStep() {
   return (
-    <Scene image={STEP_IMAGE["thank-you"]}>
+    <Scene>
       <div className="space-y-4 text-center">
         <div>
           <p className="text-sm text-muted-foreground">Thank you for using</p>

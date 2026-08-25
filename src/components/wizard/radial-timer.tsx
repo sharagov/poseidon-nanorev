@@ -11,8 +11,8 @@ export function RadialTimer({
   const stroke = 10;
   const radius = (size - stroke) / 2;
   const circumference = 2 * Math.PI * radius;
-  const progress = 1 - secondsLeft / secondsTotal;
-  const offset = circumference * (1 - progress);
+  const fractionRemaining = secondsLeft / secondsTotal;
+  const offset = circumference * (1 - fractionRemaining);
 
   return (
     <div className="relative" style={{ width: size, height: size }}>

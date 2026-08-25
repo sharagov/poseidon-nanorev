@@ -2,7 +2,6 @@
 
 import { useEffect, useState, FormEvent } from "react";
 import { Scene } from "@/components/wizard/scene";
-import { STEP_IMAGE } from "@/lib/wizard-steps";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -75,7 +74,6 @@ export function RegisterStep({
     <Scene
       eyebrow="Step 1 out of 9"
       title="Register device from MCED kit & create account"
-      image={STEP_IMAGE.register}
     >
       <form onSubmit={handleSubmit}>
         <div className="space-y-6">

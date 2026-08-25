@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Scene } from "@/components/wizard/scene";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { UNBOX_ITEMS, STEP_IMAGE } from "@/lib/wizard-steps";
+import { UNBOX_ITEMS } from "@/lib/wizard-steps";
 
 export function UnboxStep({
   onNext,
@@ -23,7 +23,7 @@ export function UnboxStep({
   const allChecked = checked.length === UNBOX_ITEMS.length;
 
   return (
-    <Scene eyebrow="Step 2 out of 9" title="Unbox your kit" image={STEP_IMAGE.unbox}>
+    <Scene eyebrow="Step 2 out of 9" title="Unbox your kit">
       <div>
         <div className="space-y-6">
           <div>

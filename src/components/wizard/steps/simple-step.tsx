@@ -6,7 +6,6 @@ import { CheckCircle2, Loader2, TriangleAlert } from "lucide-react";
 export function SimpleStep({
   eyebrow,
   title,
-  image,
   message,
   warning,
   buttonLabel,
@@ -17,7 +16,6 @@ export function SimpleStep({
 }: {
   eyebrow: string;
   title: string;
-  image: string;
   message: string;
   warning?: string;
   buttonLabel: string;
@@ -27,7 +25,7 @@ export function SimpleStep({
   disabled?: boolean;
 }) {
   return (
-    <Scene eyebrow={eyebrow} title={title} image={image}>
+    <Scene eyebrow={eyebrow} title={title}>
       <div className="text-center">
         <div className="space-y-6">
           {success && (

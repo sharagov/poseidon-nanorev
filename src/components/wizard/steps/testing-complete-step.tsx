@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Scene } from "@/components/wizard/scene";
-import { STEP_IMAGE } from "@/lib/wizard-steps";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2 } from "lucide-react";
 import {
@@ -23,11 +22,7 @@ export function TestingCompleteStep({
   const [resultsOpen, setResultsOpen] = useState(false);
 
   return (
-    <Scene
-      eyebrow="Step 8 out of 9"
-      title="Testing"
-      image={STEP_IMAGE["testing-complete"]}
-    >
+    <Scene eyebrow="Step 8 out of 9" title="Testing">
       <div className="text-center">
         <div className="space-y-6">
           <CheckCircle2 className="mx-auto size-14 text-emerald-600" />

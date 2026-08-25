@@ -68,6 +68,10 @@ export const STEP_IMAGE: Record<StepId, string> = {
   "thank-you": "/images/11-return-kit.png",
 };
 
+export const STEP_IMAGE_POSITION: Partial<Record<StepId, string>> = {
+  welcome: "center 58%",
+};
+
 export const UNBOX_ITEMS = [
   "Poseidon device",
   "Sealed bag",

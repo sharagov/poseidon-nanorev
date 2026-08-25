@@ -1,48 +1,35 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Scene } from "@/components/wizard/scene";
-import { RadialTimer } from "@/components/wizard/radial-timer";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { TriangleAlert } from "lucide-react";
 
-export function TimerStep({
+export function WaitingStep({
   eyebrow,
   title,
   message,
   warning,
-  seconds,
-  durationMs = seconds * 1000,
+  durationMs,
   onComplete,
 }: {
   eyebrow: string;
   title: string;
   message: string;
   warning?: string;
-  seconds: number;
-  durationMs?: number;
+  durationMs: number;
   onComplete: () => void;
 }) {
-  const [secondsLeft, setSecondsLeft] = useState(seconds);
-  const tickMs = durationMs / seconds;
-
   useEffect(() => {
-    if (secondsLeft <= 0) {
-      onComplete();
-      return;
-    }
-    const timeout = setTimeout(() => setSecondsLeft((s) => s - 1), tickMs);
+    const timeout = setTimeout(onComplete, durationMs);
     return () => clearTimeout(timeout);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [secondsLeft]);
+  }, []);
 
   return (
     <Scene eyebrow={eyebrow} title={title}>
       <div className="space-y-6 text-center">
         <p className="text-base font-medium">{message}</p>
-        <div className="flex justify-center">
-          <RadialTimer secondsLeft={secondsLeft} secondsTotal={seconds} />
-        </div>
         {warning && (
           <Alert
             variant="destructive"
