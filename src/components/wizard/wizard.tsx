@@ -17,8 +17,15 @@ import { TestingCompleteStep } from "@/components/wizard/steps/testing-complete-
 import { ThankYouStep } from "@/components/wizard/steps/thank-you-step";
 import { DevPanel } from "@/components/wizard/dev-panel";
 import { WizardBackground } from "@/components/wizard/wizard-background";
+import { WizardHeader } from "@/components/wizard/wizard-header";
+import { WizardCard } from "@/components/wizard/wizard-card";
 
 const STORAGE_KEY = "poseidon_registration_id";
+
+// The only step whose Scene renders without a card (see welcome-step.tsx).
+// Every other step shares one persistent card frame that just resizes
+// between steps instead of sliding in again.
+const NO_CARD_STEPS = new Set<StepId>(["welcome"]);
 
 // The displayed countdown always matches the real design duration (6s / 90s).
 // TESTING SPEED-UP — only the actual tick speed is accelerated for demo
@@ -112,9 +119,21 @@ export function Wizard() {
   };
 
   return (
-    <>
+    <div className="relative flex min-h-dvh w-full flex-col gap-10">
       <WizardBackground step={step} />
-      {renderStep()}
+      {/*
+        Header is a normal-height flex item; the card region below is
+        flex-1 with min-h-0, so it can never claim more space than what's
+        actually left below the header (see WizardCard for how the card
+        itself caps to and scrolls within that space).
+      */}
+      <WizardHeader>
+        <div className="relative min-h-0 flex-1">
+          <WizardCard active={!NO_CARD_STEPS.has(step)}>
+            {renderStep()}
+          </WizardCard>
+        </div>
+      </WizardHeader>
       {process.env.NODE_ENV !== "production" && (
         <DevPanel
           step={step}
@@ -124,7 +143,7 @@ export function Wizard() {
           onRestart={handleRestart}
         />
       )}
-    </>
+    </div>
   );
 
   function renderStep() {
@@ -194,13 +213,12 @@ export function Wizard() {
 
     case "paired":
       return (
-        <SimpleStep
+        <AutoAdvance
           eyebrow="Step 4 out of 9"
           title="Pair your device"
           message="Blue light is solid — your device is paired."
           buttonLabel="Successfully paired"
-          success
-          onNext={() =>
+          onDone={() =>
             goTo("initialize", { device_paired_at: new Date().toISOString() })
           }
         />
@@ -230,13 +248,12 @@ export function Wizard() {
 
     case "initialized":
       return (
-        <SimpleStep
+        <AutoAdvance
           eyebrow="Step 5 out of 9"
           title="Confirm and initialize"
           message="Your device is ready for sample collection."
           buttonLabel="Successfully Initialized"
-          success
-          onNext={() =>
+          onDone={() =>
             goTo("collect-sample", {
               device_initialized_at: new Date().toISOString(),
             })
@@ -334,7 +351,7 @@ export function Wizard() {
           title="Testing"
           message="Test in progress. This will take about 3 minutes. Do not disturb device while running."
           warning="Don't remove the tube"
-          durationMs={10000}
+          durationMs={3000}
           onComplete={() => setStep("testing-complete")}
         />
       );
@@ -379,6 +396,42 @@ export function Wizard() {
       return null;
   }
   }
+}
+
+// Success confirmations (e.g. "device paired") are informational, not
+// something the user needs to act on — they auto-advance after a short
+// beat so the checkmark actually registers before moving on.
+const AUTO_ADVANCE_DELAY_MS = 2500;
+
+function AutoAdvance({
+  eyebrow,
+  title,
+  message,
+  buttonLabel,
+  onDone,
+}: {
+  eyebrow: string;
+  title: string;
+  message: string;
+  buttonLabel: string;
+  onDone: () => void;
+}) {
+  useEffect(() => {
+    const timeout = setTimeout(onDone, AUTO_ADVANCE_DELAY_MS);
+    return () => clearTimeout(timeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <SimpleStep
+      eyebrow={eyebrow}
+      title={title}
+      message={message}
+      buttonLabel={buttonLabel}
+      success
+      disabled
+    />
+  );
 }
 
 function PairingOrInitializing({
