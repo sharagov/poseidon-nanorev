@@ -58,29 +58,9 @@ create trigger registrations_set_updated_at
 alter table physicians enable row level security;
 alter table registrations enable row level security;
 
--- This is a self-serve prototype with no login system, so the anon key needs
--- read access to physicians and full read/write access to registrations,
--- scoped only by knowing the registration's own id (like a bearer token).
-drop policy if exists "physicians are publicly readable" on physicians;
-create policy "physicians are publicly readable"
-  on physicians for select
-  to anon
-  using (true);
-
-drop policy if exists "anyone can create a registration" on registrations;
-create policy "anyone can create a registration"
-  on registrations for insert
-  to anon
-  with check (true);
-
-drop policy if exists "anyone can read a registration" on registrations;
-create policy "anyone can read a registration"
-  on registrations for select
-  to anon
-  using (true);
-
-drop policy if exists "anyone can update a registration" on registrations;
-create policy "anyone can update a registration"
-  on registrations for update
-  to anon
-  using (true);
+-- Both poseidon-app and poseidon-admin talk to Supabase only from
+-- server-side code using the service-role key, which bypasses RLS — so the
+-- anon role (the public key shipped in every browser bundle) gets no
+-- policies at all here. RLS stays enabled on both tables as defense in
+-- depth. See supabase/lockdown.sql for the migration that removed the
+-- original anon-open policies from an already-provisioned database.
