@@ -6,8 +6,16 @@ import { StepId, STEP_IMAGE, STEP_IMAGE_POSITION } from "@/lib/wizard-steps";
 
 type Layer = { key: number; src: string; position: string };
 
-export function WizardBackground({ step }: { step: StepId }) {
-  const src = STEP_IMAGE[step];
+export function WizardBackground({
+  step,
+  imageOverride,
+}: {
+  step: StepId;
+  // The result step's photo depends on the outcome, not just the step id,
+  // so it can't live in the static STEP_IMAGE map.
+  imageOverride?: string;
+}) {
+  const src = imageOverride ?? STEP_IMAGE[step];
   const position = STEP_IMAGE_POSITION[step] ?? "center";
   const keyRef = useRef(0);
 

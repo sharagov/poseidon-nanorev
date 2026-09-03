@@ -4,15 +4,17 @@ import { ReactNode, useContext } from "react";
 import { createPortal } from "react-dom";
 import { WizardCardPortalContext } from "@/components/wizard/wizard-card";
 import { WizardHeaderPortalContext } from "@/components/wizard/wizard-header";
+import { Stepper } from "@/components/wizard/stepper";
+import { StepId } from "@/lib/wizard-steps";
 
 export function Scene({
-  eyebrow,
+  stepId,
   title,
   header,
   card = true,
   children,
 }: {
-  eyebrow?: string;
+  stepId?: StepId;
   title?: string;
   header?: ReactNode;
   card?: boolean;
@@ -21,18 +23,8 @@ export function Scene({
   const cardPortalNode = useContext(WizardCardPortalContext);
   const headerPortalNode = useContext(WizardHeaderPortalContext);
 
-  const headerContent = header ?? (
-    <>
-      {eyebrow && (
-        <p className="text-sm font-medium text-neutral-700">{eyebrow}</p>
-      )}
-      {title && (
-        <h1 className="mt-1 text-2xl font-semibold text-neutral-900">
-          {title}
-        </h1>
-      )}
-    </>
-  );
+  const headerContent =
+    header ?? (stepId && title ? <Stepper stepId={stepId} title={title} /> : null);
 
   return (
     <>

@@ -7,6 +7,15 @@ const ALL_STEPS: StepId[] = [
   "welcome",
   "register",
   "unbox",
+  "before-you-begin",
+  "confirm-device",
+  "insert-cartridge",
+  "position-mouthpiece",
+  "position-injector",
+  "unlock-administer",
+  "hold-in-place",
+  "remove-device",
+  "phase2-gate",
   "power-on",
   "pair",
   "pairing",
@@ -22,23 +31,33 @@ const ALL_STEPS: StepId[] = [
   "testing-prep",
   "testing-progress",
   "testing-complete",
+  "result",
   "return-kit",
   "thank-you",
 ];
 
-const TIMER_STEPS = new Set<StepId>(["pairing", "initializing", "filling", "testing-prep", "testing-progress"]);
+const TIMER_STEPS = new Set<StepId>([
+  "pairing",
+  "initializing",
+  "filling",
+  "testing-prep",
+  "testing-progress",
+  "hold-in-place",
+]);
 
 export function DevPanel({
   step,
   onJump,
   onFillForm,
   onSkipTimer,
+  onSkipPhase2Gate,
   onRestart,
 }: {
   step: StepId;
   onJump: (step: StepId) => void;
   onFillForm: () => void;
   onSkipTimer: () => void;
+  onSkipPhase2Gate: () => void;
   onRestart: () => void;
 }) {
   const [open, setOpen] = useState(false);
@@ -75,6 +94,14 @@ export function DevPanel({
         {TIMER_STEPS.has(step) && (
           <button
             onClick={onSkipTimer}
+            className="rounded bg-fuchsia-600 px-2 py-1 font-medium hover:bg-fuchsia-500"
+          >
+            Skip timer
+          </button>
+        )}
+        {step === "phase2-gate" && (
+          <button
+            onClick={onSkipPhase2Gate}
             className="rounded bg-fuchsia-600 px-2 py-1 font-medium hover:bg-fuchsia-500"
           >
             Skip timer

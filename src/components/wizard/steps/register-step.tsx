@@ -86,7 +86,7 @@ export function RegisterStep({
 
   return (
     <Scene
-      eyebrow="Step 1 out of 9"
+      stepId="register"
       title="Register device from MCED kit & create account"
     >
       <form onSubmit={handleSubmit} className="h-full">
@@ -94,11 +94,11 @@ export function RegisterStep({
           scroll={
             <>
               <div className="space-y-6">
-                <div>
-                  <h2 className="text-lg font-semibold">
+                <div className="space-y-0.5">
+                  <h2 className="text-lg font-medium">
                     Enter your details and select your primary care provider
                   </h2>
-                  <p className="mt-1 text-sm text-muted-foreground">
+                  <p className="text-sm text-muted-foreground">
                     Your results are encrypted and shared only with the
                     physician you choose.
                   </p>

@@ -5,16 +5,17 @@ import { Scene } from "@/components/wizard/scene";
 import { StepBody } from "@/components/wizard/step-body";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { TriangleAlert } from "lucide-react";
+import { StepId } from "@/lib/wizard-steps";
 
 export function WaitingStep({
-  eyebrow,
+  stepId,
   title,
   message,
   warning,
   durationMs,
   onComplete,
 }: {
-  eyebrow: string;
+  stepId: StepId;
   title: string;
   message: string;
   warning?: string;
@@ -28,18 +29,18 @@ export function WaitingStep({
   }, []);
 
   return (
-    <Scene eyebrow={eyebrow} title={title}>
+    <Scene stepId={stepId} title={title}>
       <StepBody
         scroll={
           <div className="space-y-6 text-center">
-            <p className="text-base font-medium">{message}</p>
+            <p className="text-lg font-medium">{message}</p>
             {warning && (
               <Alert
                 variant="destructive"
-                className="flex h-14 items-center justify-center gap-1.5 border-none bg-destructive/10 px-12 text-center *:[svg]:translate-y-0"
+                className="flex min-h-14 items-center justify-center gap-1.5 border-none bg-destructive/10 px-6 py-3 text-center *:[svg]:translate-y-0"
               >
-                <TriangleAlert className="size-4" />
-                <AlertDescription className="text-center text-destructive">
+                <TriangleAlert className="size-4 shrink-0" />
+                <AlertDescription className="text-center text-base font-medium text-destructive">
                   {warning}
                 </AlertDescription>
               </Alert>

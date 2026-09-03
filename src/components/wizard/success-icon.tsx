@@ -7,11 +7,11 @@ export function SuccessIcon({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "mx-auto flex size-14 items-center justify-center rounded-full bg-green-800",
+        "mx-auto flex size-20 items-center justify-center rounded-full bg-green-800",
         className
       )}
     >
-      <Check className="size-7 text-white" strokeWidth={2.5} />
+      <Check className="size-10 text-white" strokeWidth={2.5} />
     </div>
   );
 }

@@ -1,0 +1,19 @@
+Squarewave Voltammetry Test Data
+Filename:  SW_2026_08_11_0301.csv
+Firmware Version:  1.4.2
+Software Version:  2.7.0
+Date:  8/11/2026 3:01:00 AM
+DAC Zero:  2048
+Test Name:  Poseidon NanoRev
+Test Type:  SW
+Test Settings:
+Start Voltage:  -0.800 V
+Stop Voltage:  0.800 V
+Amplitude:  0.050 V
+Frequency:  15 Hz / cycle
+Start Delay:  2.0 s
+Switch Delay:  0.010 s
+Delay Control:  Auto
+SW Test:
+Mode:  Square wave
+Measurement Range:  ±11.75 uA

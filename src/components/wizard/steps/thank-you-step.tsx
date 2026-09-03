@@ -7,9 +7,9 @@ export function ThankYouStep() {
     <Scene
       header={
         <div className="text-center">
-          <p className="text-sm text-neutral-700">Thank you for using</p>
-          <h1 className="text-3xl font-semibold tracking-tight text-neutral-900">
-            Poseidon NanoRev test
+          <p className="text-2xl text-neutral-700">Thank you for using</p>
+          <h1 className="text-5xl text-neutral-900">
+            POSEIDON NanoRev test
           </h1>
         </div>
       }

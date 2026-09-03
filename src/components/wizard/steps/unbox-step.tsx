@@ -24,20 +24,20 @@ export function UnboxStep({
   const allChecked = checked.length === UNBOX_ITEMS.length;
 
   return (
-    <Scene eyebrow="Step 2 out of 9" title="Unbox your kit">
+    <Scene stepId="unbox" title="Unbox your MCED kit">
       <StepBody
         scroll={
           <div className="space-y-6">
-            <div>
-              <h2 className="text-lg font-semibold">
-                Unbox your kit and confirm all items are included
+            <div className="space-y-0.5">
+              <h2 className="text-lg font-medium">
+                Unbox your MCED kit and confirm all items are included
               </h2>
-              <p className="mt-1 text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground">
                 Select items you found in your box
               </p>
             </div>
 
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               {UNBOX_ITEMS.map((item) => (
                 <div
                   key={item}
@@ -50,7 +50,7 @@ export function UnboxStep({
                       toggle(item);
                     }
                   }}
-                  className="flex cursor-pointer items-center justify-between gap-2 rounded-lg border border-input px-4 py-3 text-left text-sm font-medium"
+                  className="flex cursor-pointer items-center justify-between gap-2.5 rounded-lg border border-input px-3.5 py-2.5 text-left text-base font-medium"
                 >
                   <span>{item}</span>
                   <Checkbox checked={checked.includes(item)} />

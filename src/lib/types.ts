@@ -22,6 +22,16 @@ export type Registration = {
   test_started_at: string | null;
   test_completed_at: string | null;
   results_sent_at: string | null;
+  phase2_completed_at: string | null;
   kit_returned_at: string | null;
+  completed_at: string | null;
+};
+
+export type Outcome = "clear" | "follow_up" | "invalid" | "error";
+
+export type Result = {
+  id: string;
+  customer_id: string;
+  outcome: Outcome;
   completed_at: string | null;
 };

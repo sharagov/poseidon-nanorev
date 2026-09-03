@@ -79,11 +79,26 @@ export function WizardCard({
   }, [node, children]);
 
   // Safety net for resizes that don't change `children`'s identity —
-  // e.g. content reflowing after fonts/images finish loading.
+  // e.g. content reflowing after fonts/images finish loading, or a
+  // step's own internal state changing what it renders (ResultStep's
+  // footer buttons only appear once its own fetch resolves — that's
+  // local state inside ResultStep, so Wizard never re-renders and
+  // `children` keeps the same reference).
+  //
+  // A ResizeObserver on `node` itself can't catch that: `node` is
+  // absolutely positioned (inset-0) to fill the card, so its own box
+  // is dictated by the card's *current* height, not by its content —
+  // it only changes size when this effect already changed the card's
+  // height, which is a symptom, not a trigger. Watch for the DOM
+  // mutations that precede a resize instead (new footer buttons, a
+  // "Loading…" string swapped for the real sentence, list items
+  // rendering) so the card grows to match before anything renders
+  // below the fold.
   useLayoutEffect(() => {
     if (!node) return;
-    const observer = new ResizeObserver(() => setHeight(measureNaturalHeight(node)));
-    observer.observe(node);
+    const remeasure = () => setHeight(measureNaturalHeight(node));
+    const observer = new MutationObserver(remeasure);
+    observer.observe(node, { childList: true, subtree: true, characterData: true });
     return () => observer.disconnect();
   }, [node]);
 
