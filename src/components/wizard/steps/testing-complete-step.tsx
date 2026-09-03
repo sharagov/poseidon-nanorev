@@ -32,9 +32,7 @@ export function TestingCompleteStep({
               Test is completed! Your sample was processed successfully. Data
               was transmitted to your selected care provider.
             </p>
-            {process.env.NODE_ENV !== "production" && (
-              <OutcomeOverride registrationId={registrationId} />
-            )}
+            <OutcomeOverride registrationId={registrationId} />
           </div>
         }
         footer={
@@ -71,11 +69,13 @@ export function TestingCompleteStep({
   );
 }
 
-// Dev-only demo tool: force this registration's result to a specific
-// outcome (one of the four demo device files), so the result step this
-// session is about to see — and poseidon-admin, reading the same
-// `results` table — both reflect it. Ports poseidon-admin's own
-// overrideResultFile action; see src/lib/results/assign.ts.
+// Demo tool, live in production for testing purposes — remove once real
+// hardware results replace the demo CSV assignment. Forces this
+// registration's result to a specific outcome (one of the four demo
+// device files), so the result step this session is about to see — and
+// poseidon-admin, reading the same `results` table — both reflect it.
+// Ports poseidon-admin's own overrideResultFile action; see
+// src/lib/results/assign.ts.
 function OutcomeOverride({ registrationId }: { registrationId: string | null }) {
   const [pending, setPending] = useState<Outcome | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -97,7 +97,7 @@ function OutcomeOverride({ registrationId }: { registrationId: string | null }) 
 
   return (
     <div className="rounded-lg border border-dashed border-fuchsia-500 bg-fuchsia-950/5 p-3 text-left text-xs">
-      <p className="font-semibold text-fuchsia-600">DEV: force result outcome</p>
+      <p className="font-semibold text-fuchsia-600">Demo: force result outcome</p>
       <div className="mt-2 flex flex-wrap gap-1.5">
         {DEMO_OUTCOMES.map((outcome) => (
           <button
